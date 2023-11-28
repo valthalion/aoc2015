@@ -17,9 +17,11 @@ def read_data():
     return graph
 
 
-def tsp(graph, reduction=min):
+def tsp(graph, reduction=min, close_tour=False):
     def _tsp(path, path_len):
         if len(path) == len(graph):
+            if close_tour:
+                path_len += graph[path[-1]][path[0]]
             return path_len, path
         return reduction(_tsp((*path, node), path_len + graph[path[-1]][node]) for node in set(graph) - set(path))
 
